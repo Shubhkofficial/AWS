@@ -24,6 +24,7 @@ public class AWSCloudUtil {
     private AWSCredentials awsCredentials() {
         return new BasicAWSCredentials(accessKey, secretKey);
     }
+
     @Bean
     public AmazonS3 awsS3ClientBuilder() {
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
@@ -31,31 +32,17 @@ public class AWSCloudUtil {
                 .withRegion(Regions.US_EAST_2).build();
         return s3Client;
     }
+
+    // @Bean
+    // public QueueMessagingTemplate queueMessagingTemplate() {
+    //     return new QueueMessagingTemplate(amazonSQSAsync());
+    // }
+
+    // @Primary
+    // @Bean
+    // public AmazonSQSAsync amazonSQSAsync() {
+    //     return AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_EAST_1)
+    //             .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secret)))
+    //             .build();
+    // }
 }
-
-// @Configuration
-// public class AwsSQSConfig {
-
-// @Value("${cloud.aws.region.static}")
-// private String region;
-
-// @Value("${cloud.aws.credentials.access-key}")
-// private String accessKey;
-
-// @Value("${cloud.aws.credentials.secret-key}")
-// private String secret;
-
-// @Bean
-// public QueueMessagingTemplate queueMessagingTemplate() {
-// return new QueueMessagingTemplate(amazonSQSAsync());
-// }
-
-// @Primary
-// @Bean
-// public AmazonSQSAsync amazonSQSAsync() {
-// return AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_EAST_1)
-// .withCredentials(new AWSStaticCredentialsProvider(new
-// BasicAWSCredentials(accessKey, secret)))
-// .build();
-// }
-// }
