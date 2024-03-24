@@ -1,8 +1,0 @@
-cloud:
- aws:
-   region:
-     static: us-east-1
-     auto: false
-   credentials:
-     access-key: a
-     secret-key: z
