@@ -2,8 +2,10 @@ package com.shubham.aws;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 
-@SpringBootApplication
+@SpringBootApplication()
+@EnableCaching
 public class AwsApplication {
 
 	public static void main(String[] args) {

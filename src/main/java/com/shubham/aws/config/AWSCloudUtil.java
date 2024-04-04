@@ -1,6 +1,7 @@
 package com.shubham.aws.config;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.aws.messaging.core.QueueMessagingTemplate;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import com.amazonaws.auth.AWSCredentials;
@@ -9,11 +10,10 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-
-import lombok.extern.slf4j.Slf4j;
+import com.amazonaws.services.sqs.AmazonSQSAsync;
+import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 
 @Configuration
-@Slf4j
 public class AWSCloudUtil {
 
     @Value("${cloud.aws.credentials.access-key}")
@@ -33,16 +33,18 @@ public class AWSCloudUtil {
         return s3Client;
     }
 
-    // @Bean
-    // public QueueMessagingTemplate queueMessagingTemplate() {
-    //     return new QueueMessagingTemplate(amazonSQSAsync());
-    // }
+    @Bean
+    public AmazonSQSAsync awsSQSClientBuilder() {
+        AmazonSQSAsync amazonSQSAsync = AmazonSQSAsyncClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider((awsCredentials())))
+                .withRegion(Regions.US_EAST_2).build();
+        return amazonSQSAsync;
 
-    // @Primary
-    // @Bean
-    // public AmazonSQSAsync amazonSQSAsync() {
-    //     return AmazonSQSAsyncClientBuilder.standard().withRegion(Regions.US_EAST_1)
-    //             .withCredentials(new AWSStaticCredentialsProvider(new BasicAWSCredentials(accessKey, secret)))
-    //             .build();
-    // }
+    }
+
+    @Bean
+    public QueueMessagingTemplate queueMessagingTemplate() {
+        return new QueueMessagingTemplate(awsSQSClientBuilder());
+    }
+
 }
