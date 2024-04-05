@@ -10,6 +10,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.sns.AmazonSNSAsyncClientBuilder;
+import com.amazonaws.services.sns.AmazonSNSClient;
 import com.amazonaws.services.sqs.AmazonSQSAsync;
 import com.amazonaws.services.sqs.AmazonSQSAsyncClientBuilder;
 
@@ -34,6 +36,14 @@ public class AWSCloudUtil {
     }
 
     @Bean
+    public AmazonSNSClient awsSNSClientBuilder() {
+        AmazonSNSClient amazonSNSClient = (AmazonSNSClient) AmazonSNSAsyncClientBuilder.standard()
+                .withCredentials(new AWSStaticCredentialsProvider(awsCredentials()))
+                .withRegion(Regions.US_EAST_2)
+                .build();
+        return amazonSNSClient;
+    }
+
     public AmazonSQSAsync awsSQSClientBuilder() {
         AmazonSQSAsync amazonSQSAsync = AmazonSQSAsyncClientBuilder.standard()
                 .withCredentials(new AWSStaticCredentialsProvider((awsCredentials())))
